@@ -38,7 +38,6 @@ main {
   width: min(480px, 100%);
   height: auto;
   aspect-ratio: 1;
-  border-radius: 50%;
   background: #000;
   box-shadow: 0 0 0 10px #0a0a0a, 0 18px 40px rgba(0, 0, 0, 0.45);
 }
