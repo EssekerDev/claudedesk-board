@@ -1,0 +1,51 @@
+name: publish glass
+
+on:
+  push:
+    paths:
+      - .github/workflows/publish.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: true
+
+      - name: Fetch the glass
+        env:
+          SITE_URL: https://zero-monitors-incomplete-indirect.trycloudflare.com
+        run: |
+          set -euo pipefail
+          for f in index.html app.css app.js desk.js desk.wasm; do
+            curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "$SITE_URL/$f" -o "$f"
+          done
+          echo "daeb42e37d1afcc24f82a7f3f9c27a387e14bab2  desk.wasm" | sha1sum -c -
+          test "$(wc -c < desk.wasm)" -eq 132989
+          printf '\n' > .nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html app.css app.js desk.js desk.wasm .nojekyll
+          git commit -m "Publish the board glass"
+          git push
+
+      - name: Enable GitHub Pages
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if ! gh api "repos/${GITHUB_REPOSITORY}/pages" > /tmp/pages.json 2>/tmp/pages.err; then
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/pages" \
+              -f build_type=legacy \
+              -f "source[branch]=main" \
+              -f "source[path]=/" > /tmp/pages.json
+          fi
+          cat /tmp/pages.json
