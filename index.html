@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClaudeDesk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <main>
+    <section class="device" aria-label="ClaudeDesk">
+      <canvas id="glass" width="480" height="480"></canvas>
+      <div class="cable" aria-hidden="true"></div>
+    </section>
+    <section class="side">
+      <div class="lang">
+        <button type="button" id="lang" data-en="0">Langue</button>
+      </div>
+      <div id="scenes" class="scenes"></div>
+      <div class="menu-keys">
+        <button type="button" id="prev" disabled>Précédent</button>
+        <button type="button" id="next" disabled>Suivant</button>
+      </div>
+    </section>
+  </main>
+  <script src="desk.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

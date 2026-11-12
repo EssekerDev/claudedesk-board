@@ -1,0 +1,99 @@
+:root {
+  color-scheme: dark;
+  --bg: #121212;
+  --ink: #f5f5f5;
+  --muted: #909090;
+  --orange: #f2793a;
+  --card: #1c1c1c;
+  --line: #2a2a2a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.4 ui-sans-serif, system-ui, sans-serif;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 36px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px 48px;
+}
+
+.device {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(480px, 100%);
+}
+
+#glass {
+  width: min(480px, 100%);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: 0 0 0 10px #0a0a0a, 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.cable {
+  width: 18px;
+  height: 46px;
+  margin-top: -2px;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(#3a3a3a, #1a1a1a);
+}
+
+.side {
+  width: min(320px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lang, .menu-keys {
+  display: flex;
+  gap: 8px;
+}
+
+.scenes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: calc(100vh - 160px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+button {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 10px 14px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover { border-color: #4a4a4a; }
+
+button[aria-pressed="true"] {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.menu-keys button { flex: 1; text-align: center; }
