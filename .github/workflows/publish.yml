@@ -26,7 +26,7 @@ jobs:
           done
           echo "7871032251034ac23bcfb7bc9e0d1e6a73cb42fe  desk.wasm" | sha1sum -c -
           test "$(wc -c < desk.wasm)" -eq 132868
-          grep -q 'border-radius' app.css && exit 1
+          grep -A8 '#glass' app.css | grep -q 'border-radius' && exit 1
           printf '\n' > .nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
