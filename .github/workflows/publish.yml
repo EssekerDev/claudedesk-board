@@ -1,0 +1,36 @@
+name: publish glass
+
+on:
+  push:
+    paths:
+      - .github/workflows/publish.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: true
+      - name: Fetch the glass
+        env:
+          SITE_URL: https://chocolate-invoice-guarantee-seats.trycloudflare.com
+        run: |
+          set -euo pipefail
+          for f in index.html app.css app.js desk.js desk.wasm; do
+            curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "$SITE_URL/$f" -o "$f"
+          done
+          echo "7871032251034ac23bcfb7bc9e0d1e6a73cb42fe  desk.wasm" | sha1sum -c -
+          test "$(wc -c < desk.wasm)" -eq 132868
+          grep -q 'border-radius' app.css && exit 1
+          printf '\n' > .nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html app.css app.js desk.js desk.wasm .nojekyll
+          git diff --cached --quiet && exit 0
+          git commit -m "Publish the square glass"
+          git push
